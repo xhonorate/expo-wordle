@@ -49,25 +49,29 @@ export default function Main({ word, backToLobby }: { word: string; backToLobby:
         return state; //do nothing
       } else {
         const newState = [...state, checkLetter(word, letter, state.length)];
-        newState.forEach((guessedLetter, idx) => {
-          // Check if second instance of letter in word
-          if (guessedLetter.inWord && word.indexOf(guessedLetter.letter) !== idx) {
-            const numOfThisLetter = word.split('').filter(char => char === guessedLetter.letter).length;
-            const numOfTimesGuessed = newState.filter(guess => guess.letter === guessedLetter.letter).length;
 
-            // TODO: make this work for 3+ instances of a letter
-            if (numOfTimesGuessed > numOfThisLetter) {
-              if (guessedLetter.inCorrectSpot) {
-                // If this was the right spot, turn other guess grey
-                newState.find(guess => guess.letter === guessedLetter.letter).inWord = false;
-              } else {
-                // If this was wrong spot, dont highlight
-                guessedLetter.inWord = false;
+        const thisLetterGuesses = newState.filter(guess => guess.letter === letter);
+        // If this is the second+ time this letter is guessed the word
+        if (thisLetterGuesses.length > 1) {
+          const numOfThisLetter = word.split('').filter(char => char === letter).length;
+
+          // how many times more we have guessed this letter than it is actually in the word
+          let excessGuesses = thisLetterGuesses.length - numOfThisLetter;
+          // If we have guessed more than are in the word, only mark up to that number as correct
+          if (excessGuesses > 0) {
+            // select from ones that are not actually in correct spot
+            const dupes = thisLetterGuesses.filter(guess => !guess.inCorrectSpot);
+            
+            for (let i = dupes.length - 1; i >= 0; i--) {
+              if (excessGuesses > 0) {
+                // Back to front, dupe in wrong spot, dont highlight
+                dupes[i].inWord = false;
+                excessGuesses--;
               }
             }
           }
-        })
-
+        };
+        
         return newState;
       }
     }
