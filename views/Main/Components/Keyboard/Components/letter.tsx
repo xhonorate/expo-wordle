@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Div, Button, Text } from "react-native-magnus";
+import { Div, Icon, Text } from "react-native-magnus";
 import { GuessContext } from "../../guessContext";
 import { GuessedLetter } from "../index";
 import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated";
@@ -34,7 +34,7 @@ export default function Letter({ letter, inWord = null, inCorrectSpot = null }: 
     <Div px={2}>
       <TouchableOpacity
         onPress={() => {
-          if (!isMaxLength) {
+          if (letter === '-' || !isMaxLength) {
             guessLetter(letter);
           }
         }}
@@ -45,14 +45,19 @@ export default function Letter({ letter, inWord = null, inCorrectSpot = null }: 
               borderRadius: 8,
               alignItems: "center",
               justifyContent: "center",
-              paddingVertical: 10,
-              paddingHorizontal: 12,
+              height: 38,
+              width: letter === '-' ? 45 : 32,
               backgroundColor: "#586F7C"
             },
             style,
           ]}
         >
-          <Text fontWeight={"bold"}>{letter}</Text>
+          { letter === '-' ?
+          <Icon color={'gray900'} fontSize={'3xl'} fontFamily={'Ionicons'} name={"backspace-outline"} />
+        :
+        <Text fontWeight={"bold"}>{letter}</Text>
+
+        }
         </Animated.View>
       </TouchableOpacity>
     </Div>

@@ -17,7 +17,8 @@
     "react-native": "0.69.6",
     "react-native-gesture-handler": "~2.5.0",
     "react-native-magnus": "^1.0.63",
-    "react-native-reanimated": "~2.9.1"
+    "react-native-reanimated": "~2.9.1",
+    "expo-updates": "~0.14.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

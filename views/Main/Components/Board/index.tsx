@@ -33,7 +33,7 @@ export default function Board() {
         <WordRow key={idx} guessedLetters={guess} />
       ))}
       <WordRow isCurrentGuess={true} guessedLetters={guessedLetters} />
-      {[...Array(maxGuesses - prevGuesses.length - 1).fill([])].map((guess, idx) => (
+      {[...Array(Math.max(0, maxGuesses - prevGuesses.length - 1)).fill([])].map((guess, idx) => (
         // fill in blank rows
         <WordRow key={idx} guessedLetters={guess} />
       ))}

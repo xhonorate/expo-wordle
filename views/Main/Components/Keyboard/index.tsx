@@ -11,7 +11,7 @@ interface KeyboardProps {
   guessedLetters: { [letter: string]: GuessedLetter };
 }
 
-const letterRows = ["qwertyuiop".split(""), "asdfghjkl".split(""), "zxcvbnm".split("")];
+const letterRows = ["qwertyuiop".split(""), "asdfghjkl".split(""), "zxcvbnm-".split("")];
 
 export default function Keyboard({ guessedLetters }: KeyboardProps) {
   return (
@@ -30,7 +30,7 @@ export default function Keyboard({ guessedLetters }: KeyboardProps) {
       py={8}
     >
       {letterRows.map((row: string[], idx: number) => (
-        <Div key={idx} py={2} row w={"100%"} alignItems={"center"} justifyContent={"center"}>
+        <Div key={idx} py={2} ps={idx === 2 ? 25 : 0} row w={"100%"} alignItems={"center"} justifyContent={"center"}>
           {row.map((letter: string) => (
             <Letter key={letter} letter={letter} {...guessedLetters?.[letter]} />
           ))}

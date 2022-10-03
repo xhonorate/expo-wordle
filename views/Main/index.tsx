@@ -45,6 +45,9 @@ export default function Main({ word, backToLobby }: { word: string; backToLobby:
       if (letter === "reset") {
         return []; //Reset the guess
       }
+      if (letter === "-") { //Backspace
+        return state.length === 0 ? [] : state.slice(0, state.length - 1); 
+      }
       if (state.length === word.length) {
         return state; //do nothing
       } else {
@@ -71,7 +74,7 @@ export default function Main({ word, backToLobby }: { word: string; backToLobby:
             }
           }
         };
-        
+
         return newState;
       }
     }
@@ -84,11 +87,12 @@ export default function Main({ word, backToLobby }: { word: string; backToLobby:
 
     if (correctGuess) {
       setGameResult("win");
-    } else if (guesses.length >= maxGuesses - 1) {
-      setGameResult("lose");
     } else {
+      if (guesses.length >= maxGuesses - 1) {
+        setGameResult("lose");
+      } 
       setGuesses([...guesses, [...currentGuess]]);
-      guessLetter("reset");
+      guessLetter("reset"); 
     }
   }, [guesses, currentGuess]);
 
@@ -103,12 +107,15 @@ export default function Main({ word, backToLobby }: { word: string; backToLobby:
         submitGuess,
       }}
     >
-      <Overlay alignItems={"center"} visible={gameResult !== null} p="xl">
+      <Overlay alignItems={"center"} justifyContent={'center'} visible={gameResult !== null} p="xl">
         <Text py={8} fontWeight={"bold"} fontSize={"5xl"}>
           {gameResult === "win" ? "You Win!" : "You Lose..."}
         </Text>
+        <Div row my={4} alignSelf={'center'}>
         {gameResult === "lose" && (
           <Button
+            alignSelf={'center'}
+            mx={4}
             rounded={"circle"}
             bg={"yellow600"}
             onPress={() => {
@@ -120,11 +127,12 @@ export default function Main({ word, backToLobby }: { word: string; backToLobby:
             <Text color={"white"} fontWeight={"bold"} fontSize={"3xl"}>Try Again</Text>
           </Button>
         )}
-        <Button rounded={"circle"} bg={"green500"} onPress={backToLobby}>
+        <Button mx={4} rounded={"circle"} bg={"green500"} onPress={backToLobby}>
           <Text color={"white"} fontWeight={"bold"} fontSize={"3xl"}>
             Play Again
           </Text>
         </Button>
+        </Div>
       </Overlay>
       <Div flexDir={"column"} h={"100%"}>
         <Board />
